@@ -6,20 +6,38 @@ var $$Array = require("bs-platform/lib/js/array.js");
 var React = require("react");
 var ReasonReact = require("reason-react/src/ReasonReact.js");
 
-var component = ReasonReact.statelessComponent("Playlists");
+var component = ReasonReact.reducerComponent("Playlists");
 
-function fn(i) {
+function fn(p) {
   return React.createElement("li", {
-              key: i[/* id */0]
-            }, i[/* name */1]);
+              key: p[/* id */0]
+            }, p[/* name */1]);
 }
 
-function make(playlists, _) {
+function make() {
   var newrecord = component.slice();
-  newrecord[/* render */9] = (function () {
-      return React.createElement("div", undefined, React.createElement("h1", undefined, "Your Playlists"), React.createElement("ul", undefined, $$Array.of_list(List.map(fn, playlists))), React.createElement("button", {
+  newrecord[/* render */9] = (function (self) {
+      return React.createElement("div", undefined, React.createElement("h1", undefined, "Your Playlists"), React.createElement("ul", undefined, $$Array.of_list(List.map(fn, self[/* state */2][/* playlists */0]))), React.createElement("button", {
                       className: "btn btn-primary"
                     }, "Add new..."));
+    });
+  newrecord[/* initialState */10] = (function () {
+      return /* record */[/* playlists : :: */[
+                /* record */[
+                  /* id */"001",
+                  /* name */"Number #1"
+                ],
+                /* :: */[
+                  /* record */[
+                    /* id */"002",
+                    /* name */"Number #2"
+                  ],
+                  /* [] */0
+                ]
+              ]];
+    });
+  newrecord[/* reducer */12] = (function (_, _$1) {
+      return /* NoUpdate */0;
     });
   return newrecord;
 }

@@ -3,23 +3,41 @@ type playlist = {
     name: string
 };
 
-let component = ReasonReact.statelessComponent("Playlists");
-let fn = (i: playlist) => {
-    <li key=i.id>
-        { ReasonReact.stringToElement(i.name) }
+type state = {
+    playlists: list(playlist)
+};
+
+let component = ReasonReact.reducerComponent("Playlists");
+let fn = (p: playlist) => {
+    <li key=p.id>
+        { ReasonReact.stringToElement(p.name) }
     </li>;
 };
 
-let make = (~playlists: list(playlist), _children) => {
+let make = (_children) => {
     ...component,
-    render: (_self) => {
+    initialState: () => {
+        playlists: [
+        {
+            id: "001",
+            name: "Number #1"
+        },
+        {
+            id: "002",
+            name: "Number #2"
+        }]
+    },
+    reducer: ((), _: state) => ReasonReact.NoUpdate,
+    render: (self) => {
         <div>
-            <h1>{ReasonReact.stringToElement("Your Playlists")}</h1>
+            <h1>{ ReasonReact.stringToElement("Your Playlists") }</h1>
             <ul>
-                {List.map(fn, playlists) |> Array.of_list |> ReasonReact.arrayToElement}
+                {  List.map(fn, self.state.playlists)
+                |> Array.of_list
+                |> ReasonReact.arrayToElement }
             </ul>
             <button className="btn btn-primary">
-                {ReasonReact.stringToElement("Add new...")}
+                { ReasonReact.stringToElement("Add new...") }
             </button>
         </div>;
     }
