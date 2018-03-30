@@ -6,6 +6,7 @@
     "start": "bsb -make-world -w",
     "clean": "bsb -clean-world",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "webpack-dev-server",
     "webpack": "webpack -w",
     "webpack:production": "NODE_ENV=production webpack"
   },
@@ -22,6 +23,7 @@
   "devDependencies": {
     "bs-platform": "^2.2.3",
     "webpack": "^4.0.1",
-    "webpack-cli": "^2.0.10"
+    "webpack-cli": "^2.0.10",
+    "webpack-dev-server": "^3.1.1"
   }
 }
