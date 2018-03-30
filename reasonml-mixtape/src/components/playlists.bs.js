@@ -3,7 +3,10 @@
 
 var List = require("bs-platform/lib/js/list.js");
 var $$Array = require("bs-platform/lib/js/array.js");
+var Fetch = require("bs-fetch/src/Fetch.js");
 var React = require("react");
+var Js_exn = require("bs-platform/lib/js/js_exn.js");
+var Json_decode = require("@glennsl/bs-json/src/Json_decode.bs.js");
 var ReasonReact = require("reason-react/src/ReasonReact.js");
 
 var component = ReasonReact.reducerComponent("Playlists");
@@ -14,6 +17,48 @@ function fn(p) {
             }, p[/* name */1]);
 }
 
+var headers = /* array */[/* tuple */[
+    "Authorization",
+    "Bearer BQBeTpKxwzgUpfVmVhDmRcJD9nuQ0F4ch_BQ3kz7q7wD90FkEPzHu3gZhaCcuFAAf9VGnGwDaLDGICj3WUOfZXnr6-BFKLX4HyZJBXNCJCbF-cfWpIUpI1Cf2VZTdWDY598wTYDybolHSfAbmLr2nQkDZC2DNc8RqheKkwSMnlhe"
+  ]];
+
+function playlist(json) {
+  return /* record */[
+          /* id */Json_decode.field("ids", Json_decode.string, json),
+          /* name */Json_decode.field("name", Json_decode.string, json)
+        ];
+}
+
+function response(json) {
+  return /* record */[/* data */Json_decode.field("items", (function (param) {
+                  return Json_decode.array(playlist, param);
+                }), json)];
+}
+
+var Decode = /* module */[
+  /* playlist */playlist,
+  /* response */response
+];
+
+var playlists = fetch("https://api.spotify.com/v1/me/playlists", Fetch.RequestInit[/* make */0](/* None */0, /* Some */[headers], /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0)(/* () */0)).then((function (prim) {
+          return prim.json();
+        })).then((function (json) {
+        var exit = 0;
+        var value;
+        try {
+          value = response(json);
+          exit = 1;
+        }
+        catch (raw_msg){
+          var msg = Js_exn.internalToOCamlException(raw_msg);
+          console.log(msg);
+        }
+        if (exit === 1) {
+          console.log(value[/* data */0]);
+        }
+        return Promise.resolve(/* () */0);
+      }));
+
 function make() {
   var newrecord = component.slice();
   newrecord[/* render */9] = (function (self) {
@@ -22,19 +67,7 @@ function make() {
                     }, "Add new..."));
     });
   newrecord[/* initialState */10] = (function () {
-      return /* record */[/* playlists : :: */[
-                /* record */[
-                  /* id */"001",
-                  /* name */"Number #1"
-                ],
-                /* :: */[
-                  /* record */[
-                    /* id */"002",
-                    /* name */"Number #2"
-                  ],
-                  /* [] */0
-                ]
-              ]];
+      return /* record */[/* playlists : [] */0];
     });
   newrecord[/* reducer */12] = (function (_, _$1) {
       return /* NoUpdate */0;
@@ -44,5 +77,8 @@ function make() {
 
 exports.component = component;
 exports.fn = fn;
+exports.headers = headers;
+exports.Decode = Decode;
+exports.playlists = playlists;
 exports.make = make;
 /* component Not a pure module */
