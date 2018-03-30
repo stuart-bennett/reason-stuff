@@ -1,1 +1,1 @@
-ReactDOMRe.renderToElementWithId(<Playlists />, "app");
+ReactDOMRe.renderToElementWithId(<App />, "app");
